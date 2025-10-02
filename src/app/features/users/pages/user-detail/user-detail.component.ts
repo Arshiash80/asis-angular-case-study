@@ -6,11 +6,12 @@ import { switchMap, catchError, of } from 'rxjs';
 import { UserService } from '../../data-access/user.service';
 import { UserDetailContentComponent } from './components/user-detail-content/user-detail-content.component';
 import { UserDetailSkeletonComponent } from './components/user-detail-skeleton/user-detail-skeleton.component';
+import { FooterComponent } from '../../../../shared/ui/footer/footer.component';
 
 @Component({
   selector: 'app-user-detail',
   templateUrl: './user-detail.component.html',
-  imports: [CommonModule, UserDetailContentComponent, UserDetailSkeletonComponent]
+  imports: [CommonModule, UserDetailContentComponent, UserDetailSkeletonComponent, FooterComponent]
 })
 export class UserDetailComponent {
   // MARK: Injectables

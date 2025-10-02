@@ -9,12 +9,13 @@ import { UserCardComponent } from './components/user-card/user-card.component';
 import { UserCardSkeletonComponent } from './components/user-card/user-card-skeleton/user-card-skeleton.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { ButtonComponent } from '../../../../shared/ui/button/button.component';
+import { FooterComponent } from '../../../../shared/ui/footer/footer.component';
 
 
 @Component({
   selector: 'app-users',
   templateUrl: './users-list.component.html',
-  imports: [CommonModule, UserCardComponent, UserCardSkeletonComponent, SearchBarComponent, ButtonComponent]
+  imports: [CommonModule, UserCardComponent, UserCardSkeletonComponent, SearchBarComponent, ButtonComponent, FooterComponent]
 })
 export class UsersComponent {
   // MARK: Injectables
