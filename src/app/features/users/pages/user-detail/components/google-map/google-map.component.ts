@@ -1,8 +1,6 @@
 import { Component, Input, OnInit, OnDestroy, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-declare var google: any;
-
 @Component({
   selector: 'app-google-map',
   standalone: true,
@@ -20,19 +18,19 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, OnDestroy {
   private marker: any;
 
   ngOnInit(): void {
-    // Load Google Maps script if not already loaded
-    this.loadGoogleMapsScript();
+    // Load Leaflet CSS and JS
+    this.loadLeafletScripts();
   }
 
   ngAfterViewInit(): void {
     // Initialize map after view is ready
-    if (typeof google !== 'undefined') {
+    if (typeof (window as any).L !== 'undefined') {
       this.initializeMap();
     } else {
       // Wait for script to load
-      const checkGoogle = setInterval(() => {
-        if (typeof google !== 'undefined') {
-          clearInterval(checkGoogle);
+      const checkLeaflet = setInterval(() => {
+        if (typeof (window as any).L !== 'undefined') {
+          clearInterval(checkLeaflet);
           this.initializeMap();
         }
       }, 100);
@@ -40,20 +38,40 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.marker) {
-      this.marker.setMap(null);
+    if (this.map) {
+      this.map.remove();
     }
   }
 
-  private loadGoogleMapsScript(): void {
-    if (typeof google !== 'undefined') {
+  getGoogleMapsUrl(): string {
+    if (!this.latitude || !this.longitude) {
+      return '#';
+    }
+
+    // Create Google Maps URL with coordinates
+    // Using the q parameter for coordinates
+    return `https://www.google.com/maps?q=${this.latitude},${this.longitude}`;
+  }
+
+  private loadLeafletScripts(): void {
+    if (typeof (window as any).L !== 'undefined') {
       return; // Already loaded
     }
 
+    // Load Leaflet CSS
+    const cssLink = document.createElement('link');
+    cssLink.rel = 'stylesheet';
+    cssLink.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    cssLink.integrity = 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=';
+    cssLink.crossOrigin = '';
+    document.head.appendChild(cssLink);
+
+    // Load Leaflet JS
     const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places`;
+    script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    script.integrity = 'sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=';
+    script.crossOrigin = '';
     script.async = true;
-    script.defer = true;
     document.head.appendChild(script);
   }
 
@@ -62,122 +80,41 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    const mapOptions = {
-      center: { lat: this.latitude, lng: this.longitude },
-      zoom: 15,
-      styles: [
-        {
-          featureType: 'all',
-          elementType: 'geometry.fill',
-          stylers: [{ weight: '2.00' }]
-        },
-        {
-          featureType: 'all',
-          elementType: 'geometry.stroke',
-          stylers: [{ color: '#9c9c9c' }]
-        },
-        {
-          featureType: 'all',
-          elementType: 'labels.text',
-          stylers: [{ visibility: 'on' }]
-        },
-        {
-          featureType: 'landscape',
-          elementType: 'all',
-          stylers: [{ color: '#f2f2f2' }]
-        },
-        {
-          featureType: 'landscape.man_made',
-          elementType: 'geometry.fill',
-          stylers: [{ color: '#ffffff' }]
-        },
-        {
-          featureType: 'poi',
-          elementType: 'all',
-          stylers: [{ visibility: 'off' }]
-        },
-        {
-          featureType: 'road',
-          elementType: 'all',
-          stylers: [{ saturation: -100 }, { lightness: 45 }]
-        },
-        {
-          featureType: 'road',
-          elementType: 'geometry.fill',
-          stylers: [{ color: '#eeeeee' }]
-        },
-        {
-          featureType: 'road',
-          elementType: 'labels.text.fill',
-          stylers: [{ color: '#7b7b7b' }]
-        },
-        {
-          featureType: 'road.highway',
-          elementType: 'all',
-          stylers: [{ visibility: 'simplified' }]
-        },
-        {
-          featureType: 'road.arterial',
-          elementType: 'labels.icon',
-          stylers: [{ visibility: 'off' }]
-        },
-        {
-          featureType: 'transit',
-          elementType: 'all',
-          stylers: [{ visibility: 'off' }]
-        },
-        {
-          featureType: 'water',
-          elementType: 'all',
-          stylers: [{ color: '#46bcec' }, { visibility: 'on' }]
-        },
-        {
-          featureType: 'water',
-          elementType: 'geometry.fill',
-          stylers: [{ color: '#c8d7d4' }]
-        },
-        {
-          featureType: 'water',
-          elementType: 'labels.text.fill',
-          stylers: [{ color: '#070707' }]
-        },
-        {
-          featureType: 'water',
-          elementType: 'labels.text.stroke',
-          stylers: [{ color: '#ffffff' }]
-        }
-      ]
-    };
+    const L = (window as any).L;
 
-    this.map = new google.maps.Map(this.mapContainer.nativeElement, mapOptions);
+    // Initialize map
+    this.map = L.map(this.mapContainer.nativeElement).setView([this.latitude, this.longitude], 15);
 
-    // Create marker
-    this.marker = new google.maps.Marker({
-      position: { lat: this.latitude, lng: this.longitude },
-      map: this.map,
-      title: this.address,
-      icon: {
-        path: google.maps.SymbolPath.CIRCLE,
-        scale: 8,
-        fillColor: '#1B428A',
-        fillOpacity: 1,
-        strokeColor: '#ffffff',
-        strokeWeight: 2
-      }
-    });
+    // Add OpenStreetMap tiles (free, no API key required)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 19
+    }).addTo(this.map);
 
-    // Add info window
-    const infoWindow = new google.maps.InfoWindow({
-      content: `
-        <div class="p-2">
-          <h3 class="font-semibold text-gray-900">${this.address}</h3>
-          <p class="text-sm text-gray-600">Lat: ${this.latitude}, Lng: ${this.longitude}</p>
+    // Create custom marker icon
+    const customIcon = L.divIcon({
+      className: 'custom-marker',
+      html: `
+        <div class="w-6 h-6 bg-secondary-500 rounded-full border-2 border-white shadow-lg flex items-center justify-center">
+          <div class="w-2 h-2 bg-white rounded-full"></div>
         </div>
-      `
+      `,
+      iconSize: [24, 24],
+      iconAnchor: [12, 12]
     });
 
-    this.marker.addListener('click', () => {
-      infoWindow.open(this.map, this.marker);
-    });
+    // Add marker
+    this.marker = L.marker([this.latitude, this.longitude], { icon: customIcon })
+      .addTo(this.map);
+
+    // Add popup
+    if (this.address) {
+      this.marker.bindPopup(`
+        <div class="p-2">
+          <h3 class="font-semibold text-gray-900 text-sm">${this.address}</h3>
+          <p class="text-xs text-gray-600">Lat: ${this.latitude.toFixed(4)}, Lng: ${this.longitude.toFixed(4)}</p>
+        </div>
+      `);
+    }
   }
 }

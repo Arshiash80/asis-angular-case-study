@@ -1,16 +1,52 @@
-<div class="w-full h-64 rounded-lg overflow-hidden border border-gray-200 shadow-sm">
-  <div #mapContainer class="w-full h-full"></div>
+<div class="w-full rounded-lg border border-gray-200 shadow-sm relative">
+  <!-- Map Container -->
+  <div class="w-full h-64 relative">
+    <div #mapContainer class="w-full h-full"></div>
 
-  <!-- Fallback content when map fails to load -->
-  <div *ngIf="!latitude || !longitude" class="w-full h-full flex items-center justify-center bg-gray-100 text-gray-500">
-    <div class="text-center">
-      <svg class="w-8 h-8 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z">
-        </path>
-      </svg>
-      <p class="text-sm">Location not available</p>
+    <!-- Fallback content when map fails to load -->
+    <div *ngIf="!latitude || !longitude"
+      class="w-full h-full flex items-center justify-center bg-gray-100 text-gray-500">
+      <div class="text-center">
+        <svg class="w-8 h-8 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z">
+          </path>
+        </svg>
+        <p class="text-sm">Location not available</p>
+      </div>
     </div>
   </div>
+
+  <!-- Google Maps Link - Positioned absolutely over everything -->
+  <div *ngIf="latitude && longitude" class="google-maps-button">
+    <a [href]="getGoogleMapsUrl()" target="_blank" rel="noopener noreferrer"
+      class="inline-flex items-center gap-2 px-4 py-2 bg-primary-400 text-secondary-500 rounded-lg shadow-lg hover:bg-primary-600 hover:shadow-xl transition-all duration-200 text-sm font-semibold">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+        <circle cx="12" cy="10" r="3"></circle>
+      </svg>
+      View in Google Maps
+    </a>
+  </div>
 </div>
+
+<style>
+  .custom-marker {
+    background: transparent !important;
+    border: none !important;
+  }
+
+  .google-maps-button {
+    position: absolute !important;
+    top: 12px !important;
+    right: 12px !important;
+    z-index: 9999 !important;
+    pointer-events: auto !important;
+  }
+
+  .google-maps-button a {
+    position: relative !important;
+    z-index: 10000 !important;
+  }
+</style>
