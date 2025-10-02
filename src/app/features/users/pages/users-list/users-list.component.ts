@@ -7,11 +7,13 @@ import { UserService } from '../../data-access/user.service';
 import { User } from '../../data-access/models/user.model';
 import { UserCardComponent } from './components/user-card/user-card.component';
 import { UserCardSkeletonComponent } from './components/user-card/user-card-skeleton/user-card-skeleton.component';
+import { ButtonComponent } from '../../../../shared/ui/button/button.component';
+
 
 @Component({
   selector: 'app-users',
   templateUrl: './users-list.component.html',
-  imports: [CommonModule, UserCardComponent, UserCardSkeletonComponent]
+  imports: [CommonModule, UserCardComponent, UserCardSkeletonComponent, ButtonComponent]
 })
 export class UsersComponent {
   // MARK: Injectables
@@ -53,7 +55,7 @@ export class UsersComponent {
   });
 
   // Skeleton array for loading state
-  skeletonArray = Array(8).fill(0); // Show 8 skeleton cards
+  skeletonArray = Array(6).fill(0); // Show 6 skeleton cards for cleaner look
 
   // MARK: Methods 
   /**

@@ -8,7 +8,7 @@ import { User } from '../../../../data-access/models/user.model';
   template: `
     <div class="bg-white rounded-xl shadow-lg overflow-hidden">
       <!-- User Header -->
-      <div class="bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-12 text-white">
+      <div class="bg-gradient-to-r from-secondary-500 to-secondary-600 px-8 py-12 text-white">
         <div class="flex items-center gap-6">
           <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center">
             <span class="text-2xl font-bold">{{ user?.name?.charAt(0) }}</span>
@@ -26,8 +26,8 @@ import { User } from '../../../../data-access/models/user.model';
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           <!-- Contact Information -->
           <div>
-            <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <h2 class="text-xl font-semibold text-text-primary mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
                 </path>
@@ -66,8 +66,8 @@ import { User } from '../../../../data-access/models/user.model';
 
           <!-- Address Information -->
           <div>
-            <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <h2 class="text-xl font-semibold text-text-primary mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -85,8 +85,8 @@ import { User } from '../../../../data-access/models/user.model';
 
         <!-- Company Information -->
         <div class="mt-8 pt-8 border-t border-gray-200">
-          <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <h2 class="text-xl font-semibold text-text-primary mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
               </path>

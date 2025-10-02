@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ButtonComponent } from '../../../../shared/ui/button/button.component';
 
 @Component({
   selector: 'app-not-found',
-  templateUrl: './not-found.component.html'
+  templateUrl: './not-found.component.html',
+  imports: [ButtonComponent]
 })
 export class NotFoundComponent {
   constructor(private router: Router) { }

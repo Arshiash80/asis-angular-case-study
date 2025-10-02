@@ -2,11 +2,12 @@ import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { User } from '../../../../data-access/models/user.model';
+import { ButtonComponent } from '../../../../../../shared/ui/button/button.component';
 
 @Component({
   selector: 'app-user-card',
   templateUrl: './user-card.component.html',
-  imports: [CommonModule]
+  imports: [CommonModule, ButtonComponent]
 })
 /**
  * user card component that displays a user's information in a card format for listing users

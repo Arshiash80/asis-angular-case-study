@@ -3,8 +3,8 @@
     <!-- MARK: Header -->
     <div class="flex items-center justify-between mb-8">
       <div>
-        <h1 class="text-4xl font-bold text-gray-900 mb-2">Users</h1>
-        <p class="text-gray-600">Manage and view all users</p>
+        <h1 class="text-4xl font-bold text-text-primary mb-2">Users</h1>
+        <p class="text-text-secondary">Manage and view all users</p>
       </div>
 
       <button (click)="goHome()"
@@ -17,7 +17,7 @@
     </div>
 
     <!-- MARK: Loading State with Skeletons -->
-    <div *ngIf="loading()" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div *ngIf="loading()" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       <app-user-card-skeleton *ngFor="let skeleton of skeletonArray" />
     </div>
 
@@ -32,13 +32,13 @@
       </div>
       <h2 class="text-2xl font-bold text-gray-900 mb-2">Oops! Something went wrong</h2>
       <p class="text-gray-600 mb-6">{{ error() }}</p>
-      <button (click)="retry()" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+      <app-button variant="primary" size="lg" ariaLabel="Try again to load users" (onClick)="retry()">
         Try Again
-      </button>
+      </app-button>
     </div>
 
     <!-- MARK: Users Grid -->
-    <div *ngIf="!loading() && !error()" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div *ngIf="!loading() && !error()" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       <app-user-card *ngFor="let user of users()" [user]="user" />
     </div>
 

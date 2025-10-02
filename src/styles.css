@@ -1,2 +1,35 @@
-/* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
+
+@theme {
+  /* MARK: Brand colors */
+  --color-brand-primary: #FABD01;
+  --color-brand-secondary: #1B428A;
+  --color-text-primary: #1B428A;
+  /* MARK: Text colors */
+  --color-text-secondary: #6B7280;
+  --color-text-muted: #9CA3AF;
+
+  /* MARK: Primary color scale */
+  --color-primary-50: #FEF7E0;
+  --color-primary-100: #FEEFC2;
+  --color-primary-200: #FDDD85;
+  --color-primary-300: #FCCB48;
+  --color-primary-400: #FABD01;
+  --color-primary-500: #E1A800;
+  --color-primary-600: #C89500;
+  --color-primary-700: #AF8200;
+  --color-primary-800: #966F00;
+  --color-primary-900: #7D5C00;
+
+  /* MARK: Secondary color scale */
+  --color-secondary-50: #E8F0FE;
+  --color-secondary-100: #D1E1FD;
+  --color-secondary-200: #A3C3FB;
+  --color-secondary-300: #75A5F9;
+  --color-secondary-400: #4787F7;
+  --color-secondary-500: #1B428A;
+  --color-secondary-600: #163A7A;
+  --color-secondary-700: #11326A;
+  --color-secondary-800: #0C2A5A;
+  --color-secondary-900: #07224A;
+}
