@@ -1,74 +1,58 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  website: string;
-  company: {
-    name: string;
-    catchPhrase: string;
-  };
-  address: {
-    street: string;
-    city: string;
-    zipcode: string;
-  };
-}
+import { toSignal } from '@angular/core/rxjs-interop';
+import { switchMap, catchError, of } from 'rxjs';
+import { UserService } from '../../data-access/user.service';
+import { UserDetailContentComponent } from './components/user-detail-content/user-detail-content.component';
+import { UserDetailSkeletonComponent } from './components/user-detail-skeleton/user-detail-skeleton.component';
 
 @Component({
   selector: 'app-user-detail',
   templateUrl: './user-detail.component.html',
-  imports: [CommonModule]
+  imports: [CommonModule, UserDetailContentComponent, UserDetailSkeletonComponent]
 })
-export class UserDetailComponent implements OnInit {
-  userId: string | null = null;
-  user: User | null = null;
-  loading = true;
+export class UserDetailComponent {
+  // MARK: Injectables
+  private userService = inject(UserService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router
-  ) { }
+  // MARK: Signals
+  private userSource$ = this.route.paramMap.pipe(
+    switchMap(params => {
+      const id = params.get('id');
+      if (!id) {
+        this.router.navigate(['/users']);
+        return of(null);
+      }
+      return this.userService.getUser(id).pipe(
+        catchError(() => of(null))
+      );
+    })
+  );
 
-  ngOnInit(): void {
-    this.userId = this.route.snapshot.paramMap.get('id');
-    this.loadUser();
-  }
+  private userSignal = toSignal(this.userSource$, {
+    initialValue: undefined
+  });
 
-  private loadUser(): void {
-    if (!this.userId) {
-      this.router.navigate(['/users']);
-      return;
-    }
 
-    // Simulate API call
-    setTimeout(() => {
-      this.user = {
-        id: parseInt(this.userId!),
-        name: 'John Doe',
-        email: 'john.doe@example.com',
-        phone: '+1 (555) 123-4567',
-        website: 'johndoe.com',
-        company: {
-          name: 'Acme Corp',
-          catchPhrase: 'Making the world a better place'
-        },
-        address: {
-          street: '123 Main St',
-          city: 'New York',
-          zipcode: '10001'
-        }
-      };
-      this.loading = false;
-    }, 1000);
-  }
+  // MARK: Computed signals
+  user = computed(() => this.userSignal());
+  /**
+   * computed signal that returns the loading state of the user
+   */
+  loading = computed(() => this.userSignal() === undefined);
+  /**
+   * computed signal that returns the error state of the user
+   */
+  error = computed(() => !this.loading() && this.user() === null ? 'User not found' : null);
 
+  // MARK: Methods
+  /**
+   * method that navigates to the users list page
+   */
   goBack(): void {
     this.router.navigate(['/users']);
   }
-
 }

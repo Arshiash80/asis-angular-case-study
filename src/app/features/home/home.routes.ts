@@ -1,5 +1,5 @@
 import { type ResolveFn, Routes } from '@angular/router';
-import { LandingComponent } from './pages/landing/landing.components';
+import { LandingComponent } from './pages/landing/landing.component';
 
 const titleResolver: ResolveFn<string> = async (route) => {
   // TEST: wait for 2 sec 

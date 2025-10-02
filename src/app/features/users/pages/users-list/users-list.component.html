@@ -1,11 +1,58 @@
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-500 to-blue-600">
-  <div class="text-center text-white">
-    <h1 class="text-6xl font-bold mb-8">Users List Page</h1>
-    <p class="text-xl mb-8">This is the users list page!</p>
-    <p class="text-xl mb-8">API URL: {{ url() }}</p>
-    <button (click)="goHome()"
-      class="px-8 py-4 bg-white text-green-600 font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 text-lg">
-      Back to Home
-    </button>
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-7xl mx-auto px-4">
+    <!-- MARK: Header -->
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h1 class="text-4xl font-bold text-gray-900 mb-2">Users</h1>
+        <p class="text-gray-600">Manage and view all users</p>
+      </div>
+
+      <button (click)="goHome()"
+        class="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Back to Home
+      </button>
+    </div>
+
+    <!-- MARK: Loading State with Skeletons -->
+    <div *ngIf="loading()" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <app-user-card-skeleton *ngFor="let skeleton of skeletonArray" />
+    </div>
+
+    <!-- MARK: Error State -->
+    <div *ngIf="error() && !loading()" class="text-center py-20">
+      <div class="text-red-500 mb-4">
+        <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z">
+          </path>
+        </svg>
+      </div>
+      <h2 class="text-2xl font-bold text-gray-900 mb-2">Oops! Something went wrong</h2>
+      <p class="text-gray-600 mb-6">{{ error() }}</p>
+      <button (click)="retry()" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+        Try Again
+      </button>
+    </div>
+
+    <!-- MARK: Users Grid -->
+    <div *ngIf="!loading() && !error()" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <app-user-card *ngFor="let user of users()" [user]="user" />
+    </div>
+
+    <!-- MARK: Empty State -->
+    <div *ngIf="!loading() && !error() && users().length === 0" class="text-center py-20">
+      <div class="text-gray-400 mb-4">
+        <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z">
+          </path>
+        </svg>
+      </div>
+      <h2 class="text-2xl font-bold text-gray-900 mb-2">No users found</h2>
+      <p class="text-gray-600">There are no users to display at the moment.</p>
+    </div>
   </div>
 </div>
