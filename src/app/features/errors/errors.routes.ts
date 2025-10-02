@@ -5,6 +5,6 @@ export const errorsRoutes: Routes = [
   {
     path: '**',
     component: NotFoundComponent,
-    title: 'Not Found'
+    title: 'ASIS Case Study | Not Found'
   }
 ];
