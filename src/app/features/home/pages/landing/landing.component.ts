@@ -1,6 +1,5 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Calculator } from '../../../../core/services/calculator.service';
 import { ButtonComponent } from '../../../../shared/ui/button/button.component';
 
 @Component({
@@ -9,11 +8,7 @@ import { ButtonComponent } from '../../../../shared/ui/button/button.component';
   imports: [ButtonComponent]
 })
 export class LandingComponent {
-  private calculator = inject(Calculator);
-
-  totalCost = computed(() => this.calculator.add(40, 20));
-
-  constructor(private router: Router) { }
+  private router = inject(Router);
 
   navigateToUsers(): void {
     this.router.navigate(['/users']);
