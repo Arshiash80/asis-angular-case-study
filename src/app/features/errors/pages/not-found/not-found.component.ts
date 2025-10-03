@@ -6,7 +6,7 @@ import { FooterComponent } from '../../../../shared/ui/footer/footer.component';
 @Component({
   selector: 'app-not-found',
   templateUrl: './not-found.component.html',
-  imports: [ButtonComponent, FooterComponent]
+  imports: [ButtonComponent]
 })
 export class NotFoundComponent {
   constructor(private router: Router) { }

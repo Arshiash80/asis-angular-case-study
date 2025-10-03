@@ -9,8 +9,10 @@ import { FooterComponent } from '../../../../shared/ui/footer/footer.component';
   imports: [ButtonComponent, FooterComponent]
 })
 export class LandingComponent {
+  // MARK: Injectables
   private router = inject(Router);
 
+  // MARK: Methods
   navigateToUsers(): void {
     this.router.navigate(['/users']);
   }

@@ -3,7 +3,7 @@
     <!-- MARK: Header -->
     <div class="flex items-center justify-between mb-8">
       <button (click)="goBack()"
-        class="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors group">
+        class="flex cursor-pointer items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors group">
         <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor"
           viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
@@ -13,13 +13,19 @@
     </div>
 
     <!-- MARK: Loading State -->
-    <app-user-detail-skeleton *ngIf="loading()" />
+    @if (loading()) {
+    <app-user-detail-skeleton />
+    }
 
     <!-- MARK: User Details -->
-    <app-user-detail-content *ngIf="!loading() && user()" [user]="user()!" />
+    @if (!loading() && user()) {
+    <app-user-detail-content [user]="user()!" />
+    }
 
     <!-- MARK: Error State -->
-    <div *ngIf="!loading() && error()" class="text-center py-20">
+    @if (!loading() && error()) {
+
+    <div class="text-center py-20">
       <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-12 max-w-md mx-auto">
         <div class="text-red-500 mb-6">
           <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -36,6 +42,7 @@
         </button>
       </div>
     </div>
+    }
 
     <!-- Footer -->
     <app-footer />

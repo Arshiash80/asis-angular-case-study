@@ -20,7 +20,7 @@ export class UserDetailComponent {
   private router = inject(Router);
 
   // MARK: Signals
-  private userSource$ = this.route.paramMap.pipe(
+  private userSource = this.route.paramMap.pipe(
     switchMap(params => {
       const id = params.get('id');
       if (!id) {
@@ -33,7 +33,7 @@ export class UserDetailComponent {
     })
   );
 
-  private userSignal = toSignal(this.userSource$, {
+  private userSignal = toSignal(this.userSource, {
     initialValue: undefined
   });
 

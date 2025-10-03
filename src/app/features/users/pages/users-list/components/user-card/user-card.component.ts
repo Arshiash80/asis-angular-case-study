@@ -1,13 +1,14 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, input, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { User } from '../../../../data-access/models/user.model';
 import { ButtonComponent } from '../../../../../../shared/ui/button/button.component';
+import { UserCardSkeletonComponent } from './user-card-skeleton/user-card-skeleton.component';
 
 @Component({
   selector: 'app-user-card',
   templateUrl: './user-card.component.html',
-  imports: [CommonModule, ButtonComponent]
+  imports: [CommonModule, ButtonComponent, UserCardSkeletonComponent]
 })
 /**
  * user card component that displays a user's information in a card format for listing users
@@ -23,7 +24,7 @@ export class UserCardComponent {
   /**
    * input that receives the user from the parent component
    */
-  @Input() user: User | null = null;
+  user = input<User | null>(null);
 
 
   // MARK: Methods

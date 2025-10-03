@@ -19,8 +19,6 @@ export type ButtonSkeletonSize = 'sm' | 'md' | 'lg';
         <!-- Text skeleton -->
         <div class="h-4 bg-gray-200 rounded" [class]="textWidthClass()"></div>
         
-        <!-- Icon skeleton (if showIcon is true) -->
-        <div *ngIf="showIcon()" class="w-4 h-4 bg-gray-200 rounded"></div>
       </div>
     </div>
   `,
@@ -33,10 +31,6 @@ export class ButtonSkeletonComponent {
    */
   size = input<ButtonSkeletonSize>('md');
 
-  /**
-   * Whether to show icon skeleton
-   */
-  showIcon = input<boolean>(false);
 
   /**
    * Custom width for the skeleton button

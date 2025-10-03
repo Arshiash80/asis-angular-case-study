@@ -41,7 +41,6 @@ export class UsersComponent {
    */
   searchQuery = signal<string>('');
 
-  // MARK: Computed signals
   /**
    * computed signal that returns all users from the service
    */
@@ -52,12 +51,15 @@ export class UsersComponent {
    */
   users = computed(() => {
     const allUsers = this.allUsers();
+    //? Trim and lowercase the search query
     const query = this.searchQuery().trim().toLowerCase();
 
+    // If no query, return all users
     if (!query) {
       return allUsers;
     }
 
+    // Filter users based on search query by name, email, city, or company name
     return allUsers.filter(user =>
       this.normalizeString(user.name).includes(this.normalizeString(query)) ||
       this.normalizeString(user.email).includes(this.normalizeString(query)) ||
@@ -95,38 +97,11 @@ export class UsersComponent {
     return query.length > 0 && this.users().length === 0 && !this.loading();
   });
 
+  // MARK: Properties
   // Skeleton array for loading state
-  skeletonArray = Array(6).fill(0); // Show 6 skeleton cards for cleaner look
+  skeletonArray = Array(10).fill(0);
 
   // MARK: Methods 
-  /**
-   * method that navigates to the home page 
-   */
-  goHome(): void {
-    this.router.navigate(['/']);
-  }
-
-  /**
-   * method that reloads the page
-   */
-  retry(): void {
-    window.location.reload();
-  }
-
-  /**
-   * method that handles search query changes from the search bar component
-   */
-  onSearchChange(query: string): void {
-    this.searchQuery.set(query);
-  }
-
-  /**
-   * method that handles search clear from the search bar component
-   */
-  onSearchClear(): void {
-    this.searchQuery.set('');
-  }
-
   /**
    * method that normalizes strings for localized search
    * Removes accents and special characters for better search matching
@@ -139,4 +114,18 @@ export class UsersComponent {
       .replace(/[^\w\s]/g, '')
       .trim();
   }
+  goHome(): void {
+    this.router.navigate(['/']);
+  }
+  retry(): void {
+    window.location.reload();
+  }
+  onSearchChange(query: string): void {
+    this.searchQuery.set(query);
+  }
+  onSearchClear(): void {
+    this.searchQuery.set('');
+  }
+
+
 }

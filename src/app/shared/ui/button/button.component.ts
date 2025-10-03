@@ -19,7 +19,12 @@ export type IconPosition = 'left' | 'right';
 export class ButtonComponent {
   // MARK: Inputs
   /**
-   * Button variant - primary, secondary, ghost, or outlined
+   * Button variant
+   * 
+   * - primary: Brand colored button
+   * - secondary: Secondary colored button
+   * - ghost: Transparent button with text color
+   * - outlined: Outlined button with border
    */
   variant = input<ButtonVariant>('primary');
 

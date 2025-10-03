@@ -1,11 +1,11 @@
 <div class="w-full rounded-lg border border-gray-200 shadow-sm relative">
   <!-- Map Container -->
   <div class="w-full h-64 relative">
-    <div #mapContainer class="w-full h-full"></div>
+    <div #mapContainer class="w-full h-full  bg-gray-200 rounded-lg overflow-hidden"></div>
 
     <!-- Fallback content when map fails to load -->
-    <div *ngIf="!latitude || !longitude"
-      class="w-full h-full flex items-center justify-center bg-gray-100 text-gray-500">
+    @if (!latitude() || !longitude()) {
+    <div class="w-full h-full flex items-center justify-center bg-gray-100 text-gray-500">
       <div class="text-center">
         <svg class="w-8 h-8 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -16,10 +16,12 @@
         <p class="text-sm">Location not available</p>
       </div>
     </div>
+    }
   </div>
 
   <!-- Google Maps Link - Positioned absolutely over everything -->
-  <div *ngIf="latitude && longitude" class="google-maps-button">
+  @if (latitude() && longitude()) {
+  <div class="google-maps-button">
     <a [href]="getGoogleMapsUrl()" target="_blank" rel="noopener noreferrer"
       class="inline-flex items-center gap-2 px-4 py-2 bg-primary-400 text-secondary-500 rounded-lg shadow-lg hover:bg-primary-600 hover:shadow-xl transition-all duration-200 text-sm font-semibold">
       <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -29,6 +31,7 @@
       View in Google Maps
     </a>
   </div>
+  }
 </div>
 
 <style>

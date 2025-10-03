@@ -1,6 +1,7 @@
-<article *ngIf="user"
+@if (user()) {
+<article
   class="group bg-white rounded-2xl shadow-sm hover:shadow-lg border border-gray-100 hover:border-secondary-200 transition-all duration-300 overflow-hidden focus-within:ring-2 focus-within:ring-brand-primary focus-within:ring-offset-2"
-  role="article" [attr.aria-label]="'User card for ' + user.name">
+  role="article" [attr.aria-label]="'User card for ' + user()?.name">
 
   <!-- MARK: Card Header with Avatar and Name -->
   <div class="p-6 pb-4">
@@ -9,17 +10,17 @@
       <div class="flex-shrink-0">
         <div
           class="w-14 h-14 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-full flex items-center justify-center text-white font-semibold text-lg shadow-sm">
-          {{ user.name.charAt(0).toUpperCase() }}
+          {{ user()?.name?.charAt(0)?.toUpperCase() }}
         </div>
       </div>
 
       <!-- Name and Basic Info -->
       <div class="flex-1 min-w-0">
-        <h3 class="text-lg font-semibold text-text-primary mb-1 truncate" [attr.aria-label]="'Name: ' + user.name">
-          {{ user.name }}
+        <h3 class="text-lg font-semibold text-text-primary mb-1 truncate" [attr.aria-label]="'Name: ' + user()?.name">
+          {{ user()?.name }}
         </h3>
-        <p class="text-text-secondary text-sm truncate" [attr.aria-label]="'Email: ' + user.email">
-          {{ user.email }}
+        <p class="text-text-secondary text-sm truncate" [attr.aria-label]="'Email: ' + user()?.email">
+          {{ user()?.email }}
         </p>
       </div>
     </div>
@@ -37,8 +38,8 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z">
         </path>
       </svg>
-      <span class="text-text-secondary text-sm truncate" [attr.aria-label]="'Location: ' + user.address.city">
-        {{ user.address.city }}
+      <span class="text-text-secondary text-sm truncate" [attr.aria-label]="'Location: ' + user()?.address?.city">
+        {{ user()?.address?.city }}
       </span>
     </div>
 
@@ -50,17 +51,22 @@
           d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
         </path>
       </svg>
-      <span class="text-text-secondary text-sm truncate" [attr.aria-label]="'Company: ' + user.company.name">
-        {{ user.company.name }}
+      <span class="text-text-secondary text-sm truncate" [attr.aria-label]="'Company: ' + user()?.company?.name">
+        {{ user()?.company?.name }}
       </span>
     </div>
   </div>
 
   <!-- MARK: Action Button -->
+  @if (user()?.id) {
   <div class="px-6 pb-6">
-    <app-button variant="primary" size="md" [ariaLabel]="'View details for ' + user.name" icon="M9 5l7 7-7 7"
-      (onClick)="viewUser(user.id)" class="w-full">
+    <app-button variant="primary" size="md" [ariaLabel]="'View details for ' + user()?.name" icon="M9 5l7 7-7 7"
+      (onClick)="viewUser(user()!.id!)" class="w-full">
       View Details
     </app-button>
   </div>
+  }
 </article>
+} @else {
+<app-user-card-skeleton />
+}

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, signal, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal, OnInit, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -13,41 +13,25 @@ import { FormsModule } from '@angular/forms';
  */
 export class SearchBarComponent implements OnInit {
   // MARK: Inputs
-  /**
-   * Placeholder text for the search input
-   */
-  @Input() placeholder: string = 'Search...';
-
+  placeholder = input<string>('Search...');
   /**
    * Help text displayed below the search input
    */
-  @Input() helpText: string = '';
-
-  /**
-   * Initial search value
-   */
-  @Input() initialValue: string = '';
-
-  /**
-   * Whether to show the clear button
-   */
-  @Input() showClearButton: boolean = true;
-
-  /**
-   * CSS classes for the search input
-   */
-  @Input() inputClasses: string = '';
+  helpText = input<string>('');
+  initialValue = input<string>('');
+  showClearButton = input<boolean>(true);
+  inputClasses = input<string>('');
 
   // MARK: Outputs
   /**
    * Emits when the search query changes
    */
-  @Output() searchChange = new EventEmitter<string>();
+  searchChange = output<string>();
 
   /**
    * Emits when the search is cleared
    */
-  @Output() searchClear = new EventEmitter<void>();
+  searchClear = output<void>();
 
   // MARK: Signals
   /**
@@ -55,36 +39,26 @@ export class SearchBarComponent implements OnInit {
    */
   searchQuery = signal<string>('');
 
-  // MARK: Lifecycle
-  ngOnInit(): void {
-    if (this.initialValue) {
-      this.searchQuery.set(this.initialValue);
-    }
-  }
 
   // MARK: Methods
-  /**
-   * Handles search input changes
-   */
   onSearchChange(event: Event): void {
     const target = event.target as HTMLInputElement;
     const value = target.value;
     this.searchQuery.set(value);
     this.searchChange.emit(value);
   }
-
-  /**
-   * Clears the search input
-   */
   clearSearch(): void {
     this.searchQuery.set('');
     this.searchClear.emit();
   }
-
-  /**
-   * Gets the current search value
-   */
   getSearchValue(): string {
     return this.searchQuery();
+  }
+
+  // MARK: Lifecycle
+  ngOnInit(): void {
+    if (this.initialValue) {
+      this.searchQuery.set(this.initialValue());
+    }
   }
 }

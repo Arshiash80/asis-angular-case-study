@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild, AfterViewInit, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -10,18 +10,17 @@ import { CommonModule } from '@angular/common';
 export class GoogleMapComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef;
 
-  @Input() latitude: number = 0;
-  @Input() longitude: number = 0;
-  @Input() address: string = '';
+  // MARK: Inputs
+  //? Signal-based Inputs 
+  latitude = input<number>(0);
+  longitude = input<number>(0);
+  address = input<string>('');
 
+  // MARK: Properties
   private map: any;
   private marker: any;
 
-  ngOnInit(): void {
-    // Load Leaflet CSS and JS
-    this.loadLeafletScripts();
-  }
-
+  // MARK: Methods
   ngAfterViewInit(): void {
     // Initialize map after view is ready
     if (typeof (window as any).L !== 'undefined') {
@@ -37,25 +36,24 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    if (this.map) {
-      this.map.remove();
-    }
-  }
 
+  // MARK: Methods
   getGoogleMapsUrl(): string {
-    if (!this.latitude || !this.longitude) {
+    if (!this.latitude() || !this.longitude()) {
       return '#';
     }
 
     // Create Google Maps URL with coordinates
     // Using the q parameter for coordinates
-    return `https://www.google.com/maps?q=${this.latitude},${this.longitude}`;
+    return `https://www.google.com/maps?q=${this.latitude()},${this.longitude()}`;
   }
 
+  /**
+   * loads the Leaflet CSS and JS
+   */
   private loadLeafletScripts(): void {
     if (typeof (window as any).L !== 'undefined') {
-      return; // Already loaded
+      return;
     }
 
     // Load Leaflet CSS
@@ -75,23 +73,23 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, OnDestroy {
     document.head.appendChild(script);
   }
 
+
   private initializeMap(): void {
-    if (!this.latitude || !this.longitude) {
+    if (!this.latitude() || !this.longitude()) {
       return;
     }
 
     const L = (window as any).L;
 
     // Initialize map
-    this.map = L.map(this.mapContainer.nativeElement).setView([this.latitude, this.longitude], 15);
+    this.map = L.map(this.mapContainer.nativeElement).setView([this.latitude(), this.longitude()], 15);
 
-    // Add OpenStreetMap tiles (free, no API key required)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19
     }).addTo(this.map);
 
-    // Create custom marker icon
+    // Custom marker 
     const customIcon = L.divIcon({
       className: 'custom-marker',
       html: `
@@ -103,18 +101,31 @@ export class GoogleMapComponent implements OnInit, AfterViewInit, OnDestroy {
       iconAnchor: [12, 12]
     });
 
-    // Add marker
-    this.marker = L.marker([this.latitude, this.longitude], { icon: customIcon })
+    // Marker
+    this.marker = L.marker([this.latitude(), this.longitude()], { icon: customIcon })
       .addTo(this.map);
 
     // Add popup
-    if (this.address) {
+    if (this.address()) {
       this.marker.bindPopup(`
         <div class="p-2">
-          <h3 class="font-semibold text-gray-900 text-sm">${this.address}</h3>
-          <p class="text-xs text-gray-600">Lat: ${this.latitude.toFixed(4)}, Lng: ${this.longitude.toFixed(4)}</p>
+          <h3 class="font-semibold text-gray-900 text-sm">${this.address()}</h3>
+          <p class="text-xs text-gray-600">Lat: ${this.latitude().toFixed(4)}, Lng: ${this.longitude().toFixed(4)}</p>
         </div>
       `);
+    }
+  }
+
+  // MARK: Lifecycle hooks
+  ngOnInit(): void {
+    // Load Leaflet CSS and JS
+    this.loadLeafletScripts();
+  }
+
+
+  ngOnDestroy(): void {
+    if (this.map) {
+      this.map.remove();
     }
   }
 }
